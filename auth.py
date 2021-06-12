@@ -103,8 +103,8 @@ def get_user_by_name(user):
 
 def is_password_match(user, password_encoded):
     user = get_user_by_name(user)
-    app.logger.info(f'{user["user"]}: {user["password"]}')
     if user:
+        app.logger.info(f'{user["user"]}: {user["password"]}')
         if user['password'] == password_encoded:
             return True
     return False
