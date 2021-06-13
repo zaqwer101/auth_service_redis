@@ -14,6 +14,7 @@ token_ttl = 86400
 app = Flask(__name__)
 redis = __redis.Redis(host='redis', port=6379, db=0)
 database_url = 'http://database:5000'
+database_name = 'beauty'
 
 
 @app.route('/register', methods=['POST'])
@@ -23,7 +24,7 @@ def register():
     password = encode_password(password)
 
     data = {
-        "database": "organizer", "collection": "users",
+        "database": database_name, "collection": "users",
         "data": [{
             "user": user, 
             "password": password
@@ -90,7 +91,7 @@ def generate_token(user):
 def get_user_by_name(user):
     r = requests.get(database_url, 
         params = {
-            "database":     "organizer",
+            "database":     database_name,
             "collection":   "users",
             "user":         user
             })
@@ -105,7 +106,7 @@ def is_password_match(user, password_encoded):
     user = get_user_by_name(user)
     if user:
         app.logger.info(f'{user["user"]}: {user["password"]}')
-        if user['password'] == password_encoded:
+        if user["password"] == password_encoded:
             return True
     return False
 
